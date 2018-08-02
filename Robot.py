@@ -42,10 +42,10 @@ class Robot(object):
         """
         if self.testing:
             # TODO 1. No random choice when testing
-            pass
+            self.epsilon = 1
         else:
             # TODO 2. Update parameters when learning
-            pass
+            self.epsilon = self.epsilon
 
         return self.epsilon
 
@@ -55,18 +55,20 @@ class Robot(object):
         """
 
         # TODO 3. Return robot's current state
-        return None
+        return self.state
+        # return None
 
     def create_Qtable_line(self, state):
         """
         Create the qtable with the current state
         """
-        # TODO 4. Create qtable with current state
+        # TODO 4. Create q table with current state
         # Our qtable should be a two level dict,
         # Qtable[state] ={'u':xx, 'd':xx, ...}
         # If Qtable[state] already exits, then do
         # not change it.
-        pass
+        if state not in self.Qtable:
+            self.Qtable[state] = 0
 
     def choose_action(self):
         """
@@ -77,28 +79,39 @@ class Robot(object):
             # TODO 5. Return whether do random choice
             # hint: generate a random number, and compare
             # it with epsilon
-            pass
+            tmp = random.random()
+            if tmp <= self.epsilon:
+                return True
+            return False
 
         if self.learning:
             if is_random_exploration():
                 # TODO 6. Return random choose aciton
-                return None
+                # return None
+                action = random.choice(self.valid_actions)
+                return action
             else:
                 # TODO 7. Return action with highest q value
-                return None
+                action = max(self.Qtable.keys(), key=lambda key: self.Qtable[key])
+                return action
+
         elif self.testing:
             # TODO 7. choose action with highest q value
+            action = max(self.Qtable.keys(), key=lambda key: self.Qtable[key])
+            return action
         else:
             # TODO 6. Return random choose aciton
+            action = random.choice(self.valid_actions)
+            return action
 
     def update_Qtable(self, r, action, next_state):
         """
         Update the qtable according to the given rule.
         """
         if self.learning:
-            pass
             # TODO 8. When learning, update the q table according
             # to the given rules
+
 
     def update(self):
         """
